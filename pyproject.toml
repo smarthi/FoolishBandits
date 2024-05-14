@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "foolish-bandits"
+version = "0.1.0"
+description = "Contextual Bandits for Ad Targeting on fool.com"
+authors = ["Suneel Marthi <suneel.marthi@foolcontractors.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+scikit-learn = "^1.4.0"
+pytest = "^8.1.1"
+fastapi="^0.110.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
