@@ -130,27 +130,27 @@ class ThomSampB(BanditPolicy):
                 "Thompson Sampling for Contextual Bandits with Linear Payoffs"
 
         Args:
-                x (dict): Dictionary containing the possible patient features.
+                x (dict): Dictionary containing the possible features.
         Returns:
-                output (str): string containing one of ('low', 'medium', 'high')
+                output (str): string containing one of Ads
         """
         xvec = np.array([x[f] for f in self.features])
         sampled_mu = {arm: np.random.multivariate_normal(self.mu[arm], self.v2 * np.linalg.inv(self.B[arm])) for arm in range(self.n_arms)}
         chosen_action = max(sampled_mu, key=lambda k: sampled_mu[k].dot(xvec))
         return self.chosen_action(chosen_action)
 
-    def update(self, x, a, r):
+    def update(self, x, action, reward):
         """
         See Algorithm 1 and section 2.2 from paper:
                 "Thompson Sampling for Contextual Bandits with Linear Payoffs"
 
         Args:
-                x (dict): Dictionary containing the possible patient features.
-                a (str): string, indicating the action your algorithem chose ('low', 'medium', 'high')
-                r (int): the reward you recieved for that action
+                x (dict): Dictionary containing the possible features.
+                action (str): string, indicating the action your algorithm chose (one of the Ads)
+                reward (int): the reward you received for that action
         """
         xvec = np.array([x[f] for f in self.features])
-        action = self.action_arm_dict(a)
+        action = self.action_arm_dict(action)
         self.B[action] += np.outer(xvec, xvec)
-        self.f[action] += r * xvec
+        self.f[action] += reward * xvec
         self.mu[action] = np.linalg.solve(self.B[action], self.f[action])
